@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -10,9 +11,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230217062021_Update17022023")]
+    partial class Update17022023
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
@@ -43,7 +46,10 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("BreedId")
+                    b.Property<Guid?>("BreedId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("BreedId1")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Gender")
@@ -59,6 +65,8 @@ namespace Persistence.Migrations
 
                     b.HasIndex("BreedId");
 
+                    b.HasIndex("BreedId1");
+
                     b.ToTable("Pets");
                 });
 
@@ -66,9 +74,11 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Breed", "Breed")
                         .WithMany("Pets")
-                        .HasForeignKey("BreedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BreedId");
+
+                    b.HasOne("Domain.Breed", null)
+                        .WithMany()
+                        .HasForeignKey("BreedId1");
 
                     b.Navigation("Breed");
                 });

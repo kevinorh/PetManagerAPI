@@ -8,6 +8,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<Breed, Breed>();
+            CreateMap<Pet, Pet>();
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,9 @@ namespace Application.Breeds
 {
     public class List
     {
-        public class Query : IRequest<List<Breed>> { }
+        public class Query : IRequest<Result<List<Breed>>> { }
 
-        public class Handler : IRequestHandler<Query, List<Breed>>
+        public class Handler : IRequestHandler<Query, Result<List<Breed>>>
         {
             private readonly DataContext _context;
             public Handler(DataContext context)
@@ -21,9 +22,9 @@ namespace Application.Breeds
                 _context = context;
 
             }
-            public async Task<List<Breed>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Breed>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Breeds.ToListAsync();
+                return Result<List<Breed>>.Success(await _context.Breeds.ToListAsync(cancellationToken));
             }
         }
     }
